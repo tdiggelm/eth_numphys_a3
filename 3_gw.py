@@ -16,7 +16,8 @@ def trapezoidal(f, a, b, N):
 
     f:     Function f(x)
     a, b:  Bounds of the integration interval
-    N:     Number of subintervals (2 evaluations per interval, internal nodes merged)
+    N:     Number of subintervals (2 evaluations per interval,
+            internal nodes merged)
     """
     ############################################################
     #                                                          #
@@ -34,7 +35,8 @@ def simpson(f, a, b, N):
 
     f:     Function f(x)
     a, b:  Bounds of the integration interval
-    N:     Number of subintervals (3 evaluations per interval, internal nodes merged)
+    N:     Number of subintervals (3 evaluations per interval,
+            internal nodes merged)
     """
     #############################################################
     #                                                           #

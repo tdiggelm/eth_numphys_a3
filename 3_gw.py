@@ -94,6 +94,7 @@ def composite_legendre(f, a, b, N, n):
     # Gauss-Legendre Quadraturregel                 #
     #                                               #
     #################################################
+    I = sum(legendre(f, a + i*float(b-a)/N, a + (i+1)*float(b-a)/N, n) for i in xrange(0, N))
     return I
 
 
@@ -182,6 +183,8 @@ def part_c():
     # Berechnen Sie den Quadraturfehler #
     #                                   #
     #####################################
+    E1cgl = abs(I1cgl - I1ex)
+    E2cgl = abs(I2cgl - I2ex)
 
     # Konvergenzplot fuer f1
     figure(figsize=(12,8))

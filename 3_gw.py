@@ -99,6 +99,8 @@ def composite_legendre(f, a, b, N, n):
     return I
 
 
+out_dir = "./out/"
+
 def part_c():
     r"""All code for sub-task d)
     """
@@ -109,7 +111,7 @@ def part_c():
     plot(t, f2(t), label=r"$f_2(x) = \sqrt{x}$")
     grid(True)
     legend(loc="center right")
-    savefig("funktionen.png")
+    savefig(out_dir+"funktionen.png")
 
     # Exakte Werte der Integrale
     I1ex = arctan(sqrt(5.0)) / sqrt(5.0)
@@ -200,7 +202,7 @@ def part_c():
     ylabel(r"Absoluter Fehler")
     legend(loc="lower left")
     title(r"Quadrature von $f_1(x) = \frac{1}{1 + 5x^2}$")
-    savefig("konvergenz_f1.png")
+    savefig(out_dir+"konvergenz_f1.png")
 
     # Konvergenzplot fuer f2
     figure(figsize=(12,8))
@@ -215,7 +217,7 @@ def part_c():
     ylabel(r"Absoluter Fehler")
     legend(loc="lower left")
     title(r"Quadrature von $f_2(x) = \sqrt{x}$")
-    savefig("konvergenz_f2.png")
+    savefig(out_dir+"konvergenz_f2.png")
 
 
 def adaptquad(f, ML, rtol=1e-6, abstol=1e-10):
@@ -267,14 +269,14 @@ def part_d():
     grid(True)
     xlabel(r"$x$")
     ylabel(r"Mesh refinement level")
-    savefig("mesh_f1.png")
+    savefig(out_dir+"mesh_f1.png")
 
     figure(figsize=(12,8))
     plot(map(len, ML), "-o")
     grid(True)
     xlabel(r"Mesh refinement level")
     ylabel(r"Mesh size")
-    savefig("meshsize_f1.png")
+    savefig(out_dir+"meshsize_f1.png")
 
     # Adaptive Berechnung von f2
     M0 = linspace(0, 1, 5)
@@ -287,19 +289,25 @@ def part_d():
     grid(True)
     xlabel(r"$x$")
     ylabel(r"Mesh refinement level")
-    savefig("mesh_f2.png")
+    savefig(out_dir+"mesh_f2.png")
 
     figure(figsize=(12,8))
     plot(map(len, ML), "-o")
     grid(True)
     xlabel(r"Mesh refinement level")
     ylabel(r"Mesh size")
-    savefig("meshsize_f2.png")
-
+    savefig(out_dir+"meshsize_f2.png")
 
 
 
 if __name__ == "__main__":
+    # create output dir
+    from os import mkdir
+    try:
+        mkdir(out_dir)
+    except OSError:
+        pass
+
     # Funktionen f1 und f2 als globale Variablen definiert
     f1 = lambda x: 1.0 / (1.0 + 5.0*x**2)
     f2 = lambda x: sqrt(x)

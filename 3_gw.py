@@ -94,7 +94,8 @@ def composite_legendre(f, a, b, N, n):
     # Gauss-Legendre Quadraturregel                 #
     #                                               #
     #################################################
-    I = sum(legendre(f, a + i*float(b-a)/N, a + (i+1)*float(b-a)/N, n) for i in xrange(0, N))
+    l = float(b-a)
+    I = sum(legendre(f, a + i*l/N, a + (i+1)*l/N, n) for i in xrange(0, N))
     return I
 
 

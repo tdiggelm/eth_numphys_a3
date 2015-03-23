@@ -160,7 +160,7 @@ def part_c():
     #                                   #
     #####################################
     E1si = abs(I1si - I1ex)
-    E1si = abs(I2si - I2ex)
+    E2si = abs(I2si - I2ex)
 
     # Gauss-Legendre
     # Anzahl Auswertungspunkte insgesamt

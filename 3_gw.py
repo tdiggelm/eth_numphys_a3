@@ -235,9 +235,10 @@ def adaptquad(f, ML, rtol=1e-6, abstol=1e-10):
     #          dass er alle erzeugten Gitter zurueck gibt.     #
     #                                                          #
     ############################################################
-    h = diff(ML) # compute lengths of mesh intervals
-    mp = 0.5 * (ML[:-1]+ML[1:]) # compute midpoint positions
-    fx = (ML); fm = f(mp) # evaluate function at positions and midpoints
+    M = ML[-1]
+    h = diff(M) # compute lengths of mesh intervals
+    mp = 0.5 * (M[:-1]+M[1:]) # compute midpoint positions
+    fx = f(M); fm = f(mp) # evaluate function at positions and midpoints
     trp_loc = h * (fx[:-1] + 2*fm + fx[1:]) / 4 # local trapezoid rule
     simp_loc = h * (fx[:-1] + 4*fm + fx[1:]) / 6 # local simpson rule
     I = sum(simp_loc) # use simpson val as interm approx for integral val
@@ -247,8 +248,8 @@ def adaptquad(f, ML, rtol=1e-6, abstol=1e-10):
     if err_tot > rtol * abs(I) and err_tot > abstol:
         refcells = nonzero(est_loc > 0.9*sum(est_loc)/size(est_loc))[0]
         # add midpoints of intervalls with large error contributions, recurse
-        ML = sort(append(ML, mp[refcells]))
-        I = adaptquad(f, ML, rtol, abstol)
+        ML.append(sort(append(M, mp[refcells])))
+        I, ML = adaptquad(f, ML, rtol, abstol)
     return I, ML
 
 
@@ -257,7 +258,7 @@ def part_d():
     """
     # Adaptive Berechnung von f1
     M0 = linspace(0, 1, 5)
-    I, ML = adaptquad(f1, M0)
+    I, ML = adaptquad(f1, [M0])
 
     figure(figsize=(12,8))
     plot(M0, zeros_like(M0), "db")

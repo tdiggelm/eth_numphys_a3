@@ -227,7 +227,6 @@ def adaptquad(f, ML, rtol=1e-6, abstol=1e-10):
     abstol:  absolute tolerance for termination, necessary in case the exact
              integral value = 0, which renders a relative tolerance meaningless.
     """
-    I = 0.0
     ############################################################
     #                                                          #
     # Implementieren Sie hier eine h-adaptive Quadratur        #
@@ -236,6 +235,20 @@ def adaptquad(f, ML, rtol=1e-6, abstol=1e-10):
     #          dass er alle erzeugten Gitter zurueck gibt.     #
     #                                                          #
     ############################################################
+    h = diff(ML) # compute lengths of mesh intervals
+    mp = 0.5 * (ML[:-1]+ML[1:]) # compute midpoint positions
+    fx = (ML); fm = f(mp) # evaluate function at positions and midpoints
+    trp_loc = h * (fx[:-1] + 2*fm + fx[1:]) / 4 # local trapezoid rule
+    simp_loc = h * (fx[:-1] + 4*fm + fx[1:]) / 6 # local simpson rule
+    I = sum(simp_loc) # use simpson val as interm approx for integral val
+    est_loc = abs(simp_loc - trp_loc) # estimated quadrature error
+    err_tot = sum(est_loc) # estimate for glob error
+    # refine mesh if est total error not below relative or absolute threshold
+    if err_tot > rtol * abs(I) and err_tot > abstol:
+        refcells = nonzero(est_loc > 0.9*sum(est_loc)/size(est_loc))[0]
+        # add midpoints of intervalls with large error contributions, recurse
+        ML = sort(append(ML, mp[refcells]))
+        I = adaptquad(f, ML, rtol, abstol)
     return I, ML
 
 
@@ -244,7 +257,7 @@ def part_d():
     """
     # Adaptive Berechnung von f1
     M0 = linspace(0, 1, 5)
-    I, ML = adaptquad(f1, [M0])
+    I, ML = adaptquad(f1, M0)
 
     figure(figsize=(12,8))
     plot(M0, zeros_like(M0), "db")
